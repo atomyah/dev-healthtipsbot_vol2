@@ -8,11 +8,12 @@ var app = express()
 
 //ツイッターモジュールをインスタンス化
 var twitter = new Twitter({
-  consumer_key: '＜あなたのConsumer API keys＞',
-  consumer_secret: '＜あなたのAPI secret key＞',
-  access_token_key: '＜あなたのAccess token＞',
-  access_token_secret: '＜あなたのAccess token secret＞'
+  consumer_key: process.env['CONSUMER_KEY'],
+  consumer_secret: process.env['CONSUMER_SECRET'],
+  access_token_key: process.env['ACCESS_TOKEN_KEY'],
+  access_token_secret: process.env['ACCESS_TOKEN_SECRET']
 })
+
 
 
 //'0 0 0-23/3 * * *' だと3時間ごと0分0秒
