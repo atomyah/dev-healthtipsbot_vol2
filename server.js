@@ -84,6 +84,11 @@ app.set('port', (process.env.PORT || 5000));
     res.send('Hello World')
 })
 
+//Twitter webhook用URL
+app.get('/webhook/twitter', function(req, res) {
+  res.send('Twitter webhook URL page')
+})
+
 app.listen(app.get('port'), function() {
 console.log("Node app is runnning at localhost:" + app.get('port'))
 })
