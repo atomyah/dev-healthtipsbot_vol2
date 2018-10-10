@@ -85,9 +85,17 @@ app.set('port', (process.env.PORT || 5000));
 })
 
 //Twitter webhook用URL
+var crypto = require('crypto');
+
 app.get('/webhook/twitter', function(req, res) {
-  res.send('Twitter webhook URL page')
+  var crc_token = req.query.crc_token;
+  if (!crc_token) {
+    res.send('no crc_token received')
+  }
+  var signature = crypto.createHmac('sha256', process.env['CONSUMER_SECRET']).update(crc_token).digest('base64')
+  res.json({ response_token: `sha256=${signature}` })
 })
+
 
 app.listen(app.get('port'), function() {
 console.log("Node app is runnning at localhost:" + app.get('port'))
