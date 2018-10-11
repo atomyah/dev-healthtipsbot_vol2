@@ -20,7 +20,7 @@ var twitter = new Twitter({
 
 //'0 0 0-23/3 * * *' だと3時間ごと0分0秒
 //毎分 ↓
-var cronTime = '0 * * * * *'
+var cronTime = '0 0 * * * *'
 new CronJob({
   cronTime: cronTime,
   onTick: function() {
@@ -103,6 +103,7 @@ app.get('/webhook/twitter', function(req, res) {
 })
 
 app.post('/webhook/twitter', function(req, res) {
+    console.log(req.body);
     console.log(`${JSON.stringify(req.body)}`);
     res.send('200 OK')
 })
