@@ -90,7 +90,6 @@ var crypto = require('crypto');
 app.get('/webhook/twitter', function(req, res) {
   var crc_token = req.query.crc_token;
   if (!crc_token) {
-    res.status(400);
     res.send('Error: crc_token missing from request.')
   } else {
     var signature = crypto.createHmac('sha256', process.env['CONSUMER_SECRET']).update(crc_token).digest('base64')
