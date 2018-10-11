@@ -103,7 +103,7 @@ app.get('/webhook/twitter', function(req, res) {
 })
 
 app.post('/webhook/twitter', function(req, res) {
-    console.log(`${JSON.stringify(req.body, null, "  ")}`);
+    console.log(`${JSON.stringify(req.body)}`);
     res.send('200 OK')
 })
 
