@@ -102,6 +102,11 @@ app.get('/webhook/twitter', function(req, res) {
   }
 })
 
+app.post('/webhook/twitter', function(req, res) {
+    console.log(`${JSON.stringify(req.body, null, "  ")}`);
+    res.send('200 OK')
+})
+
 
 app.listen(app.get('port'), function() {
 console.log("Node app is runnning at localhost:" + app.get('port'))
