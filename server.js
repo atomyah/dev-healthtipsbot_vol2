@@ -104,9 +104,8 @@ app.get('/webhook/twitter', function(req, res) {
 
 app.use(bodyParser());
 app.post('/webhook/twitter', function(req, res) {
-    var body = JSON.stringify(req.body)
-    console.log(req.body + '　ここまでreq.bodyよ～ん')
-    console.log('ここからJSON.stringify(req.body)よ～ん　'+body)
+    var body = JSON.stringify(req.body, undefined,"\t")
+    console.log('ここからstringifyした整形JSONよ～ん　' + body + '　ここまでよ～ん')
     res.send('200 OK')
 })
 
