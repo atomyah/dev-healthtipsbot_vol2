@@ -103,8 +103,9 @@ app.get('/webhook/twitter', function(req, res) {
 })
 
 app.post('/webhook/twitter', function(req, res) {
-    console.log(req.body);
-    console.log(`${JSON.stringify(req.body)}`);
+    var body;
+    body = JSON.parse(req.body)    
+    console.log(body)
     res.send('200 OK')
 })
 
