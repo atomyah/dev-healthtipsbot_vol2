@@ -5,7 +5,7 @@ var CronJob = require("cron").CronJob
 var mysql = require('mysql')
 
 var app = express()
-
+var bodyParser = require('body-parser');
 
 
 // ツイッターのキーとシークレットトークンを初期化（環境変数を使用）
@@ -102,10 +102,11 @@ app.get('/webhook/twitter', function(req, res) {
   }
 })
 
+app.use(bodyParser());
 app.post('/webhook/twitter', function(req, res) {
-    var body;
-    body = JSON.parse(req.body)    
-    console.log(body)
+    var body = JSON.strigify(req.body)
+    console.log(req.body + '　ここまでreq.bodyよ～ん')
+    console.log('ここからJSON.stringify(req.body)よ～ん　'+body)
     res.send('200 OK')
 })
 
