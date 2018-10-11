@@ -89,7 +89,10 @@ var crypto = require('crypto');
 
 app.get('/webhook/twitter', function(req, res) {
   var crc_token = req.query.crc_token;
-  if (crc_token) {
+  if (!crc_token) {
+    res.status(400);
+    res.send('Error: crc_token missing from request.')
+  } else {
     var signature = crypto.createHmac('sha256', process.env['CONSUMER_SECRET']).update(crc_token).digest('base64')
     console.log(`receive crc check. token=${crc_token} res=${signature}`)
     res.status(200);
@@ -97,9 +100,6 @@ app.get('/webhook/twitter', function(req, res) {
     res.send({
       response_token: 'sha256=' + signature
     })
-  } else {
-    res.status(400);
-    res.send('Error: crc_token missing from request.')
   }
 })
 
