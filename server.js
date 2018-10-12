@@ -6,7 +6,6 @@ var mysql = require('mysql')
 
 var app = express()
 var bodyParser = require('body-parser')
-var request = require('request');
 
 
 
@@ -91,7 +90,7 @@ app.set('port', (process.env.PORT || 5000));
 */
 
 // POSTされたデータをパースして使用する
-app.use(bodyParser.urlencoded({ extended: false }));
+//app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // Twitterからのeventを受け取る
@@ -112,9 +111,9 @@ app.post('/webhook/twitter', function(req, res) {
       */
       var param = { user_id: follower }
       twitter.post('friendships/create', param, function(err, tweet, response) {
+        console.log('------------フォロワー情報-------------')
         console.log(tweet)
-        console.log('------------tweetとresponseの間-------------')
-        console.log(response)
+
       })
     }
   }
