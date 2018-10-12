@@ -20,7 +20,7 @@ var twitter = new Twitter({
 
 //'0 0 0-23/3 * * *' だと3時間ごと0分0秒
 //毎分 ↓
-var cronTime = '0 * * * * *'
+var cronTime = '0 0 * * * *'
 new CronJob({
   cronTime: cronTime,
   onTick: function() {
@@ -86,32 +86,34 @@ app.set('port', (process.env.PORT || 5000));
 
 /*
 //Twitter webhook用URLにてCRCリクエストを処理
-var crypto = require('crypto');
-
-app.get('/webhook/twitter', function(req, res) {
-  var crc_token = req.query.crc_token;
-  if (!crc_token) {
-    res.send('Error: crc_token missing from request.')
-  } else {
-    var signature = crypto.createHmac('sha256', process.env['CONSUMER_SECRET']).update(crc_token).digest('base64')
-    console.log(`receive crc check. token=${crc_token} res=${signature}`)
-    res.status(200);
-//    res.json({ response_token: `sha256=${signature}` })
-    res.send({
-      response_token: 'sha256=' + signature
-    })
-  }
-})
 */
 
-//Twitter POSTリクエストを受け付ける
-app.use(bodyParser());
+// POSTされたデータをパースして使用する
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+// Twitterからのeventを受け取る
 app.post('/webhook/twitter', function(req, res) {
+  // イベントがfollow_eventsの場合、相手のidをfollowerに格納
+  if (req.body.follow_events) {
+    var follower = req.body.follow_events[0].source.id;
+
+    // フォロワーが自分自身でない場合のみ
+    if (follower != process.env['MYSELF']) {
+      const request_options = {
+        url: `https://api.twitter.com/1.1/friendships/create.json?user_id=follower&follow=true`,
+        oauth: twitter
+      }
+      req.post(request_options, (error, response, body) => { console.log(`${res.statusCode} ${res.statusMessage}`); console.log(body) });
+    }
+  }
+  /*
     var body = JSON.stringify(req.body, undefined,"\t")
     if (!body) {
       throw new Error('body is empty');
     }
     console.log(body + '　ここまでよ～ん')
+  */
     res.send('200 OK')
 })
 
