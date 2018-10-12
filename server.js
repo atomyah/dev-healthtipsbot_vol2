@@ -5,7 +5,7 @@ var CronJob = require("cron").CronJob
 var mysql = require('mysql')
 
 var app = express()
-var bodyParser = require('body-parser');
+var bodyParser = require('body-parser')
 
 
 // ツイッターのキーとシークレットトークンを初期化（環境変数を使用）
@@ -20,7 +20,7 @@ var twitter = new Twitter({
 
 //'0 0 0-23/3 * * *' だと3時間ごと0分0秒
 //毎分 ↓
-var cronTime = '0 0 * * * *'
+var cronTime = '0 * * * * *'
 new CronJob({
   cronTime: cronTime,
   onTick: function() {
@@ -84,7 +84,8 @@ app.set('port', (process.env.PORT || 5000));
     res.send('Hello World')
 })
 
-//Twitter webhook用URL
+/*
+//Twitter webhook用URLにてCRCリクエストを処理
 var crypto = require('crypto');
 
 app.get('/webhook/twitter', function(req, res) {
@@ -101,10 +102,15 @@ app.get('/webhook/twitter', function(req, res) {
     })
   }
 })
+*/
 
+//Twitter POSTリクエストを受け付ける
 app.use(bodyParser());
 app.post('/webhook/twitter', function(req, res) {
     var body = JSON.stringify(req.body, undefined,"\t")
+    if (!body) {
+      throw new Error('body is empty');
+    }
     console.log(body + '　ここまでよ～ん')
     res.send('200 OK')
 })
