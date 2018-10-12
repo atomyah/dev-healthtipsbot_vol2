@@ -104,6 +104,7 @@ app.post('/webhook/twitter', function(req, res) {
     if (follower != process.env['MYSELF']) {
       const request_options = {
         url: `https://api.twitter.com/1.1/friendships/create.json?user_id=follower&follow=true`,
+        headers: { 'Content-type': 'application/x-www-form-urlencoded' },
         oauth: twitter
       }
       request.post(request_options, (error, response, body) => { console.log(`${response.statusCode} ${response.statusMessage}`); console.log(body) });
