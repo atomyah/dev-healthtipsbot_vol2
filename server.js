@@ -111,7 +111,7 @@ app.post('/webhook/twitter', function(req, res) {
       request.post(request_options, (error, response, body) => { console.log(`${response.statusCode} ${response.statusMessage}`); console.log(body) });
       */
       var param = { user_id: follower }
-      twitter.post('friendships/create', param, function(err, tweet, response) => { console.log(`${tweet.statusCode} ${tweet.statusMessage}`); console.log(response) });
+      twitter.post('friendships/create', param, function(err, tweet, response) {})
     }
   }
   /*
