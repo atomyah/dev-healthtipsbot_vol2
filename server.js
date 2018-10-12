@@ -106,7 +106,7 @@ app.post('/webhook/twitter', function(req, res) {
         url: `https://api.twitter.com/1.1/friendships/create.json?user_id=follower&follow=true`,
         oauth: twitter
       }
-      reqeest.post(request_options, (error, response, body) => { console.log(`${res.statusCode} ${res.statusMessage}`); console.log(body) });
+      request.post(request_options, (error, response, body) => { console.log(`${res.statusCode} ${res.statusMessage}`); console.log(body) });
     }
   }
   /*
