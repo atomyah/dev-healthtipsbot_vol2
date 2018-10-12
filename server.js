@@ -112,7 +112,7 @@ app.post('/webhook/twitter', function(req, res) {
       */
       var param = { user_id: follower }
       twitter.post('friendships/create', param, function(err, tweet, response) {
-        console.log(response)
+        console.log(tweet)
       })
     }
   }
