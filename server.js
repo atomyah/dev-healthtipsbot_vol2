@@ -6,6 +6,8 @@ var mysql = require('mysql')
 
 var app = express()
 var bodyParser = require('body-parser')
+const request = require('request');
+
 
 
 // ツイッターのキーとシークレットトークンを初期化（環境変数を使用）
@@ -97,14 +99,14 @@ app.post('/webhook/twitter', function(req, res) {
   // イベントがfollow_eventsの場合、相手のidをfollowerに格納
   if (req.body.follow_events) {
     var follower = req.body.follow_events[0].source.id;
-
+    console.log('フォロワーのIDは、' + follower)
     // フォロワーが自分自身でない場合のみ
     if (follower != process.env['MYSELF']) {
       const request_options = {
         url: `https://api.twitter.com/1.1/friendships/create.json?user_id=follower&follow=true`,
         oauth: twitter
       }
-      req.post(request_options, (error, response, body) => { console.log(`${res.statusCode} ${res.statusMessage}`); console.log(body) });
+      reqeest.post(request_options, (error, response, body) => { console.log(`${res.statusCode} ${res.statusMessage}`); console.log(body) });
     }
   }
   /*
