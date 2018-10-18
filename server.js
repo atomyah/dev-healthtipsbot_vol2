@@ -20,7 +20,7 @@ var twitter = new Twitter({
 
 
 //'0 0 0-23/3 * * *' だと3時間ごと0分0秒
-//毎分 ↓
+//毎時 ↓
 var cronTime = '0 0 * * * *'
 new CronJob({
   cronTime: cronTime,
@@ -106,22 +106,12 @@ app.get('/webhook/twitter', function(req, res) {
   }
 })
 
-/*
-//Twitter POSTリクエストを受け付ける
-app.use(bodyParser());
-app.post('/webhook/twitter', function(req, res) {
-    var body = JSON.stringify(req.body, undefined,"\t")
-    console.log(body + '　ここまでよ～ん')
-    res.send('200 OK')
-})
-*/
 
 // POSTされたデータをパースして使用する
 app.use(bodyParser.json());
 
 // Twitterからのeventを自分のWebhook URLで受け取る
 app.post('/webhook/twitter', function(req, res) {
-
 
 
   // イベントがfollow_eventsの場合、相手のidをfollowerに格納
