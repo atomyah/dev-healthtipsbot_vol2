@@ -155,7 +155,7 @@ function tweetRep(arg) {
     if(err) {
       return console.log(err)
     }else{
-      return console.log('------------返信リプ内容-------------' + tweet)
+      return console.log('------------返信リプ内容-------------' + JSON.stringify(tweet, undefined,"\t"))
     }
   })
 }
