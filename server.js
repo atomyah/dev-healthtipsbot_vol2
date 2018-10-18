@@ -106,12 +106,23 @@ app.get('/webhook/twitter', function(req, res) {
   }
 })
 
+//Twitter POSTリクエストを受け付ける
+app.use(bodyParser());
+app.post('/webhook/twitter', function(req, res) {
+    var body = JSON.stringify(req.body, undefined,"\t")
+    console.log(body + '　ここまでよ～ん')
+    res.send('200 OK')
+})
 
+/*
 // POSTされたデータをパースして使用する
 app.use(bodyParser.json());
 
 // Twitterからのeventを自分のWebhook URLで受け取る
 app.post('/webhook/twitter', function(req, res) {
+
+
+
 
   // イベントがfollow_eventsの場合、相手のidをfollowerに格納
   // フォローしてきた相手をフォローする。 鍵アカからのフォローはfollowイベント発火しない。
@@ -123,7 +134,7 @@ app.post('/webhook/twitter', function(req, res) {
     console.log('フォロワーのscreenNameは、' + screenName)
 
     // フォロワーが自分自身でない場合のみフォローバック
-/*    if (follower != process.env['MYSELF']) {
+    if (follower != process.env['MYSELF']) {
       var param = { user_id: follower }
       twitter.post('friendships/create', param, function(err, tweet, response) {
         console.log('------------フォロワー情報-------------')
@@ -132,11 +143,11 @@ app.post('/webhook/twitter', function(req, res) {
 //        tweetRep('@' + screenName + ' さん、フォローありがとうございます！')
       })
     }
-*/
+
   }
     res.send('200 OK')
 })
-
+*/
 
 // フォローありがとうございます返信リプ用の関数
 function tweetRep(arg) {
