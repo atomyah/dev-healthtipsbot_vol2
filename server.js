@@ -111,7 +111,7 @@ app.post('/webhook/twitter', function(req, res) {
         console.log('------------フォロワー情報-------------')
         console.log(tweet)
 
-        tweetRep('@' + screenName + ' さん、フォローありがとうございます！')
+//        tweetRep('@' + screenName + ' さん、フォローありがとうございます！')
       })
     }
   }
