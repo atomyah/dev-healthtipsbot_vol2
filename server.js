@@ -85,47 +85,50 @@ app.set('port', (process.env.PORT || 5000));
     res.send('Hello World')
 })
 
+
+
 /*
 //Twitter webhook用URLにてCRCリクエストを処理
 */
 
 // POSTされたデータをパースして使用する
-//app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-// Twitterからのeventを受け取る
+// Twitterからのeventを自分のWebhook URLで受け取る
 app.post('/webhook/twitter', function(req, res) {
+
   // イベントがfollow_eventsの場合、相手のidをfollowerに格納
+  // フォローしてきた相手をフォローする。 鍵アカからのフォローはfollowイベント発火しない。
   if (req.body.follow_events) {
     var follower = req.body.follow_events[0].source.id;
+    var screenName = req.body.follow_events[0].source.screen_name;
     console.log('フォロワーのIDは、' + follower)
-    // フォロワーが自分自身でない場合のみ
+
+    // フォロワーが自分自身でない場合のみフォローバック
     if (follower != process.env['MYSELF']) {
-      /*
-      const request_options = {
-        url: `https://api.twitter.com/1.1/friendships/create.json?user_id=follower&follow=true`,
-        headers: { 'Content-type': 'application/x-www-form-urlencoded' },
-        oauth: twitter
-      }
-      request.post(request_options, (error, response, body) => { console.log(`${response.statusCode} ${response.statusMessage}`); console.log(body) });
-      */
       var param = { user_id: follower }
       twitter.post('friendships/create', param, function(err, tweet, response) {
         console.log('------------フォロワー情報-------------')
         console.log(tweet)
 
+        tweetRep('@' + screenName + ' さん、フォローありがとうございます！')
       })
     }
   }
-  /*
-    var body = JSON.stringify(req.body, undefined,"\t")
-    if (!body) {
-      throw new Error('body is empty');
-    }
-    console.log(body + '　ここまでよ～ん')
-  */
     res.send('200 OK')
 })
+
+
+// フォローありがとうございます返信リプ用の関数
+function tweetRep(arg) {
+  twitter.post('statuses/update', {status: arg}, function(err, tweet, response) {
+    if(err) {
+      return console.log(err)
+    }else{
+      return console.log('------------返信リプ内容-------------' + tweet)
+    }
+  })
+}
 
 
 app.listen(app.get('port'), function() {
