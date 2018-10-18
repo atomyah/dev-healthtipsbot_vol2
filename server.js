@@ -106,6 +106,7 @@ app.get('/webhook/twitter', function(req, res) {
   }
 })
 
+/*
 //Twitter POSTリクエストを受け付ける
 app.use(bodyParser());
 app.post('/webhook/twitter', function(req, res) {
@@ -113,14 +114,13 @@ app.post('/webhook/twitter', function(req, res) {
     console.log(body + '　ここまでよ～ん')
     res.send('200 OK')
 })
+*/
 
-/*
 // POSTされたデータをパースして使用する
 app.use(bodyParser.json());
 
 // Twitterからのeventを自分のWebhook URLで受け取る
 app.post('/webhook/twitter', function(req, res) {
-
 
 
 
@@ -140,14 +140,14 @@ app.post('/webhook/twitter', function(req, res) {
         console.log('------------フォロワー情報-------------')
         console.log(tweet)
 
-//        tweetRep('@' + screenName + ' さん、フォローありがとうございます！')
+        tweetRep('@' + screenName + ' さん、フォローありがとうございます！')
       })
     }
 
   }
     res.send('200 OK')
 })
-*/
+
 
 // フォローありがとうございます返信リプ用の関数
 function tweetRep(arg) {
