@@ -87,9 +87,25 @@ app.set('port', (process.env.PORT || 5000));
 
 
 
-/*
+
 //Twitter webhook用URLにてCRCリクエストを処理
-*/
+var crypto = require('crypto');
+
+app.get('/webhook/twitter', function(req, res) {
+  var crc_token = req.query.crc_token;
+  if (!crc_token) {
+    res.send('Error: crc_token missing from request.')
+  } else {
+    var signature = crypto.createHmac('sha256', process.env['CONSUMER_SECRET']).update(crc_token).digest('base64')
+    console.log(`receive crc check. token=${crc_token} res=${signature}`)
+    res.status(200);
+//    res.json({ response_token: `sha256=${signature}` })
+    res.send({
+      response_token: 'sha256=' + signature
+    })
+  }
+})
+
 
 // POSTされたデータをパースして使用する
 app.use(bodyParser.json());
@@ -100,12 +116,14 @@ app.post('/webhook/twitter', function(req, res) {
   // イベントがfollow_eventsの場合、相手のidをfollowerに格納
   // フォローしてきた相手をフォローする。 鍵アカからのフォローはfollowイベント発火しない。
   if (req.body.follow_events) {
+    res.setHeader('Content-Type', 'text/plain')
     var follower = req.body.follow_events[0].source.id;
     var screenName = req.body.follow_events[0].source.screen_name;
     console.log('フォロワーのIDは、' + follower)
+    console.log('フォロワーのscreenNameは、' + screenName)
 
     // フォロワーが自分自身でない場合のみフォローバック
-    if (follower != process.env['MYSELF']) {
+/*    if (follower != process.env['MYSELF']) {
       var param = { user_id: follower }
       twitter.post('friendships/create', param, function(err, tweet, response) {
         console.log('------------フォロワー情報-------------')
@@ -114,6 +132,7 @@ app.post('/webhook/twitter', function(req, res) {
 //        tweetRep('@' + screenName + ' さん、フォローありがとうございます！')
       })
     }
+*/
   }
     res.send('200 OK')
 })
